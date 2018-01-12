@@ -1,1 +1,200 @@
-
+//
+// https://github.com/Microsoft/vscode/issues/26897
+// Can't use terminal window on background tasks because they do not exit when vscode exits.
+// And, the output window cannot collect input from a task.
+// So we must remain at 0.1.0 until this is resolved.
+//
+{
+	"version": "0.1.0",
+	"command": "npm",
+	"isShellCommand": true,
+	"echoCommand": false,
+	"suppressTaskName": true,
+	"showOutput": "always",
+	"tasks": [
+		{
+			"args": [
+				"run",
+				"start",
+				"--silent",
+				"--react-hot-boilerplate-vscode:port=3000",
+				"--react-hot-boilerplate-vscode:host=localhost"
+			],
+			"problemMatcher": [
+				{
+					"owner": "custom",
+					"pattern": {
+						"regexp": "____________"
+					},
+					"background": {
+						"activeOnStart": true,
+						"beginsPattern": "^webpack: Compiling\\.\\.\\.$",
+						"endsPattern": "^webpack: (Compiled successfully|Failed to compile)\\.$"
+					}
+				},
+				{
+					"owner": "javascript",
+					"severity": "error",
+					"applyTo": "closedDocuments",
+					"fileLocation": "absolute",
+					"pattern": [
+						{
+							"regexp": "^(Module build failed:\\s.*?:\\s(.*):(.*?))[\\s+](?:\\(([\\d-]+):([\\d-]+)\\))?$",
+							"message": 3,
+							"file": 2,
+							"line": 4,
+							"column": 5
+						}
+					]
+				},
+				{
+					"owner": "javascript",
+					"severity": "error",
+					"applyTo": "closedDocuments",
+					"fileLocation": "relative",
+					"pattern": [
+						{
+							"regexp": "^ERROR in ./(.*)\\s?$",
+							"file": 1
+						},
+						{
+							"regexp": "^.*?Error:\\s(.*').*$",
+							"message": 1
+						},
+						{
+							"regexp": "^\\s+@.*?(\\d+)(?:-([\\d]+))?:(\\d+)(?:-([\\d]+))?\\s?$",
+							"line": 1,
+							"endLine": 2,
+							"column": 3,
+							"endColumn": 4
+						}
+					]
+				}
+			],
+			"isBackground": true,
+			"taskName": "(Internal)Development"
+		},
+		{
+			"args": [
+				"run",
+				"startprod",
+				"--silent"
+			],
+			"problemMatcher": [
+				{
+					"owner": "custom",
+					"pattern": {
+						"regexp": "____________"
+					},
+					"background": {
+						"activeOnStart": true,
+						"beginsPattern": "^Starting servers$",
+						"endsPattern": "^Servers started$"
+					}
+				},
+				{
+					"owner": "javascript",
+					"severity": "error",
+					"applyTo": "closedDocuments",
+					"fileLocation": "absolute",
+					"pattern": [
+						{
+							"regexp": "^(Module build failed:\\s.*?:\\s(.*):(.*?))[\\s+](?:\\(([\\d-]+):([\\d-]+)\\))?$",
+							"message": 3,
+							"file": 2,
+							"line": 4,
+							"column": 5
+						}
+					]
+				},
+				{
+					"owner": "javascript",
+					"severity": "error",
+					"applyTo": "closedDocuments",
+					"fileLocation": "relative",
+					"pattern": [
+						{
+							"regexp": "^ERROR in ./(.*)\\s?$",
+							"file": 1
+						},
+						{
+							"regexp": "^.*?Error:\\s(.*').*$",
+							"message": 1
+						},
+						{
+							"regexp": "^\\s+@.*?(\\d+)(?:-([\\d]+))?:(\\d+)(?:-([\\d]+))?\\s?$",
+							"line": 1,
+							"endLine": 2,
+							"column": 3,
+							"endColumn": 4
+						}
+					]
+				}
+			],
+			"isBackground": true,
+			"taskName": "(Internal)Production"
+		},
+		{
+			"args": [
+				"install",
+				"--progress",
+				"false",
+				"--loglevel",
+				"http"
+			],
+			"taskName": "Install"
+		},
+		{
+			"args": [
+				"run",
+				"builddll",
+				"--silent"
+			],
+			"taskName": "Builddll Development & Production"
+		},
+		{
+			"args": [
+				"run",
+				"config",
+				"--silent"
+			],
+			"taskName": "Run Project Configuration"
+		},
+		{
+			"args": [
+				"run",
+				"build",
+				"--silent"
+			],
+			"taskName": "Build Production"
+		},
+		{
+			"args": [
+				"run",
+				"builddll:dev",
+				"--silent"
+			],
+			"taskName": "Builddll Development"
+		},
+		{
+			"args": [
+				"run",
+				"buildmochadebug",
+				"--silent"
+			],
+			"taskName": "(Internal)BuildMochaDebug"
+		},
+		{
+			"args": [
+				"run",
+				"lint",
+				"--loglevel",
+				"silent"
+			],
+			"problemMatcher": [
+				"$eslint-stylish"
+			],
+			"taskName": "Lint"
+		}
+	]
+}
