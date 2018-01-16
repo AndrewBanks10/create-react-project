@@ -36,9 +36,11 @@
 * [**Supercharge your JavaScript debugging workflow with Visual Studio Code (Build 2017)**](https://channel9.msdn.com/Events/Build/2017/T6071)
 
 ### Required Extensions
+To install extensions in vscode, click the extensions button to the very left. Then use the search box at the top to find the extension to install.
 
-* [**vscode-chrome-debug**](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome)
-* [**vscode-eslint**](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+* [**Debugger for Chrome**](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome)
+* [**Eslint**](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+* Tslint for Visual Studio Code (For typescript projects only)
 
 ### Recommended Extensions
 
@@ -441,10 +443,10 @@ Note that create-react-project does all the grunt work for you in terms of setti
 ## Simplicity with Programming React Components Using Create-react-project
 As shown above, to create react components using create-react-project you only need to program these five simple items.
 1. Define your component state variables under defaultState.
-2. Define your component UI service functions in uiServiceFunctions.
+2. Define your component UI service functions in uiServiceFunctions and external event triggered service functions in externalServiceFunctions.
 3. Define your business code.
-3. Define your react component with jsx as a simple stateless component.
-4. Write your test code.
+4. Define your react component with jsx as a simple stateless component.
+5. Write your test code.
 
 ## Demos Featuring this React Project Creator
 [react-causality-redux-vscode-template](https://github.com/AndrewBanks10/react-causality-redux-vscode-template)
