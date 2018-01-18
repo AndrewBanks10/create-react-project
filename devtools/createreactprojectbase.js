@@ -349,8 +349,7 @@ const globalData = {
     cr += `  isTypescript: true,
 `
   }
-  cr += `  injectTapEventPlugin: false,
-  srcRoot: '${config.sourceDir}'
+  cr += `  injectTapEventPlugin: false
 }
 
 // globalPartitionState - Access and set individual key values in the global store.
