@@ -131,6 +131,32 @@ Also, causality-redux is an extension to redux so you still have access to all t
 ```javascript
 const state = causalityRedux.store.getState()
 ```
+### How to perform controller initialization that requires partitionState, getState or setState.
+In the component controller file, add a function that performs the initialization code. See below for an example.
+```javascript
+// Put in some initial comments.
+export function initController () {
+  if (getState().items.length === 0) {
+    const initialComments = [
+      { author: 'Cory Brown', text: 'My 2 scents' },
+      { author: 'Jared Anderson', text: 'Let me put it this way. You`ve heard of Socrates? Aristotle? Plato? Morons!' },
+      { author: 'Matt Poulson', text: 'It`s just a function!' },
+      { author: 'Bruce Campbell', text: 'Fish in a tree? How can that be?' }
+    ]
+
+    initialComments.forEach(comment => uiServiceFunctions.onAddComment(comment))
+  }
+}
+```
+Then in the component index file, simply call initController at the end. See below.
+```javascript
+export { commentBoxPartition, partitionState, setState, getState }
+export default wrappedComponents.CommentBox
+
+// Perform controller initialization here that needs partitionState, setState or getState.
+initController()
+```
+
 ### How to Change State in an MVC Component from an External Module
 If you need to change component's state based on some changes that happen elsewhere in the app, define an exported function in the target Component as below. This may be needed for example as data comes in from a webSocket. It is recommended that only the owner of the state partition performs the actual changes on that component's state. 
 ```javascript
@@ -195,20 +221,20 @@ import { defaultState, uiServiceFunctions } from './controller'
 import MultiPartitionForm from './view'
 
 const controllerUIConnections = [
-  [
-    MultiPartitionForm, // React Component to wrap with redux connect
+  {
+    uiComponent: MultiPartitionForm, // React Component to wrap with redux connect
     // Use an array of objects to attach multiple partitions to the component's props
     [
       // The entry below is from this partition.
       { partitionName: multiFormPartition, storeKeys: ['fixedValue'] },
-      // Include the increment function and counter state from
+      // Include the increment function and counter state variable from
       // the counterFormPartition component.
       { partitionName: counterFormPartition, changerKeys: ['increment'], storeKeys: ['counter'] },
       // Include items from the commentBoxPartition component.
       { partitionName: commentBoxPartition, storeKeys: ['items'] }
     ],
-    'MultiPartitionForm' // Name of the react component string form
-  ]
+    uiComponentName: 'MultiPartitionForm' // Name of the react component string form
+  }
 ]
 
 // Then perform the below to replace the default establishControllerConnections in the index file.
@@ -220,8 +246,8 @@ const { wrappedComponents } = establishControllerConnections({
 ```
 Some points need to be made about the above code.
 1. A partition definition is not required for the component. Therefore, a component can be summary only with no state of its own. That means the partition key would not exist for establishControllerConnections.
-2. In order to include all store keys from a partition then storeKeys must be an empty array. To exclude all store keys, do not include storeKeys in the entry.
-3. In order to include all controller functions from a partition then changerKeys must be an empty array. To exclude all controller functions, do not include changerKeys in the entry.
+2. In order to include all store keys from a partition then storeKeys must be undefined. To exclude all store keys, set storeKeys=[].
+3. In order to include all controller functions from a partition then changerKeys must be undefined. To exclude all controller functions, set changerKeys=[].
 
 ### How to Access UI Service Functions for Unit Testing
 The partitionStore object that is exported in the component index file contains all of the UI service functions. So, in your component test code you can do something like the below.
@@ -442,7 +468,7 @@ Note that create-react-project does all the grunt work for you in terms of setti
 
 ## Simplicity with Programming React Components Using Create-react-project
 As shown above, to create react components using create-react-project you only need to program these five simple items.
-1. Define your component state variables under defaultState.
+1. Define your component state variables in defaultState.
 2. Define your component UI service functions in uiServiceFunctions and external event triggered service functions in externalServiceFunctions.
 3. Define your business code.
 4. Define your react component with jsx as a simple stateless component.
@@ -450,3 +476,5 @@ As shown above, to create react components using create-react-project you only n
 
 ## Demos Featuring this React Project Creator
 [react-causality-redux-vscode-template](https://github.com/AndrewBanks10/react-causality-redux-vscode-template)
+
+This demo contains examples for all the documentation above including a react router.
