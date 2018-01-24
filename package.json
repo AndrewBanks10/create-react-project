@@ -14,18 +14,11 @@
     "build:all": "npm run builddll:dev && npm run builddll:prod && npm run build",
     "start": "cross-env NODE_ENV=development node devtools/server.js",
     "startprod": "cross-env NODE_ENV=development node devtools/runservers.js devtools/pserver.js",
-    "lint": "tslint --project tsconfig.json src/**/*.ts?(x)",
-    "test": "cross-env NODE_ENV=mochaTesting TS_NODE_PROJECT=./test/tsconfig.json mocha --require ts-node/register --require ignore-styles --require test/setup.ts test/projectsetup.ts test/mountapp.tsx src/**/*.spec.ts --no-timeouts",
-    "compile:del": "rimraf temp",
-    "compile:copy": "copyfiles src/**/*.* temp",
-    "compile:src": "tsc --outDir temp --sourceMap --watch",
-    "buildmochadebug": "npm run compile:del && npm run compile:copy && npm run compile:src",
-    "createcomponent": "node devtools/createcomponent.js",
-    "createcomponentwc": "node devtools/createcomponentwc.js",
-    "createreactproject": "node devtools/createreactproject.js && npm run build:all",
-    "mochadebug": "npm run compile:del && npm run compile:copy && npm run compile:src",
+    "lint": "eslint src/**",
+    "test": "cross-env NODE_ENV=mochaTesting mocha --require babel-register --require ignore-styles --require test/setup.js test/projectsetup.js test/mountapp.jsx src/**/*.spec.js --no-timeouts",
     "config": "node devtools/apps/server.js",
-    "createproject": "npm install && npm run config"
+    "createproject": "npm install && npm run config",
+    "compile:src": "babel ./test/**/*.js ./test/**/*.jsx ./src/**/*.js ./src/**/*.jsx --out-dir temp --source-maps --watch"
   },
   "repository": {
     "type": "git",
